@@ -77,9 +77,18 @@ void SCH_Dispatch_Tasks(void)
 
 void SCH_Delete_Task(uint32_t TaskID)
 {
-    SCH_tasks_G[TaskID].pTask = 0x0000;
-    SCH_tasks_G[TaskID].Delay = 0;
-    SCH_tasks_G[TaskID].Period = 0;
-    SCH_tasks_G[TaskID].RunMe = 0;
+	if(current_index_task == 0) return;
+
+	if(TaskID < current_index_task)
+	{
+		for(int i = TaskID; i < current_index_task - 1; i++){
+			SCH_tasks_G[i] = SCH_tasks_G[i + 1];
+		}
+	}
+	current_index_task--;
+	SCH_tasks_G[current_index_task].pTask = 0x0000;
+	SCH_tasks_G[current_index_task].Delay = 0;
+	SCH_tasks_G[current_index_task].Period = 0;
+	SCH_tasks_G[current_index_task].RunMe = 0;
 }
 
